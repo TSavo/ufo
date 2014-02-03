@@ -833,6 +833,10 @@ int64 static GetBlockValue(int nHeight, int64 nFees)
     {
         return nSubsidy = 60000000 * COIN;
     }
+	
+	// Subsidy is cut in half every 400000 blocks, which will occur approximately every 4 years
+    nSubsidy >>= (nHeight / 400000); // UFO Coin: 400000 approximately every 4 years
+	
     return nSubsidy + nFees;
 }
 
