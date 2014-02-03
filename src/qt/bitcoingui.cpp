@@ -4,6 +4,7 @@
  * W.J. van der Laan 2011-2012
  * The Bitcoin Developers 2011-2012
  * The Litecoin Developers 201-2013
+ * The Ufo Coin Developers 2014 Ufo Coin
  */
 #include "bitcoingui.h"
 #include "transactiontablemodel.h"
