@@ -1,0 +1,9 @@
+# Backups #
+*.cpp~
+.~
+
+#files being edited
+*~
+
+# Build #
+build/
