@@ -841,14 +841,10 @@ int64 static GetBlockValue(int nHeight, int64 nFees)
     return nSubsidy + nFees;
 }
 
-static const int64 nTargetTimespan = 1 * 24 * 60 * 60; // UFO: 1 days
-static const int64 nTargetSpacing = 90; // UFO: 1.5 minute blocks
-static const int64 nInterval = nTargetTimespan / nTargetSpacing;
-
-// Thanks: Balthazar for suggesting the following fix
-// https://bitcointalk.org/index.php?topic=182430.msg1904506#msg1904506
-static const int64 nReTargetHistoryFact = 4; // look at 4 times the retarget
-                                             // interval into the block history
+static int64 nTargetTimespan = 1 * 24 * 60 * 60; // 1 day
+static int64 nTargetSpacing = 90; // 1.5 minute blocks
+static int64 nInterval = nTargetTimespan / nTargetSpacing;
+static int64 nReTargetHistoryFact = 4; // look at 4 times the retarget interval into block history
 
 //
 // minimum amount of work that could possibly be required nTime after
@@ -882,6 +878,23 @@ unsigned int static GetNextWorkRequired(const CBlockIndex* pindexLast, const CBl
     // Genesis block
     if (pindexLast == NULL)
         return nProofOfWorkLimit;
+	
+    // From block 34559 reassess the difficulty every 40 blocks
+	// Reduce Retarget factor to 2
+    if(pindexLast->nHeight >= 34559)
+    {
+        nTargetTimespan = 60 * 60; // 1 hours
+        nTargetSpacing = 1.5 * 60; // 1.5 minutes
+        nInterval = nTargetTimespan / nTargetSpacing;
+		nReTargetHistoryFact = 2;
+    }
+	else
+	{
+		nTargetTimespan = 1 * 24 * 60 * 60; // 1 day
+		nTargetSpacing = 1.5 * 60; // 1.5 minutes
+		nInterval = nTargetTimespan / nTargetSpacing;
+		nReTargetHistoryFact = 4;
+	}
 
     // Only change once per interval
     if ((pindexLast->nHeight+1) % nInterval != 0)
@@ -906,7 +919,7 @@ unsigned int static GetNextWorkRequired(const CBlockIndex* pindexLast, const CBl
         return pindexLast->nBits;
     }
 
-    // Litecoin: This fixes an issue where a 51% attack can change difficulty at will.
+    // Ufocoin: This fixes an issue where a 51% attack can change difficulty at will.
     // Go back the full period unless it's the first retarget after genesis. Code courtesy of Art Forz
     int blockstogoback = nInterval-1;
     if ((pindexLast->nHeight+1) != nInterval)
@@ -2007,7 +2020,6 @@ bool LoadBlockIndex(bool fAllowNew)
     {
         if (!fAllowNew)
             return false;
-    
         
         // Genesis block
         const char* pszTimestamp = "2 january 2014";
@@ -3470,7 +3482,7 @@ CBlock* CreateNewBlock(CReserveKey& reservekey)
                 continue;
 
             // Transaction fee required depends on block size
-            // Litecoind: Reduce the exempted free transactions to 500 bytes (from Bitcoin's 3000 bytes)
+            // Ufocoind: Reduce the exempted free transactions to 500 bytes (from Bitcoin's 3000 bytes)
             bool fAllowFree = (nBlockSize + nTxSize < 1500 || CTransaction::AllowFree(dPriority));
             int64 nMinFee = tx.GetMinFee(nBlockSize, fAllowFree, GMF_BLOCK);
 
