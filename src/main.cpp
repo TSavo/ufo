@@ -879,9 +879,9 @@ unsigned int static GetNextWorkRequired(const CBlockIndex* pindexLast, const CBl
     if (pindexLast == NULL)
         return nProofOfWorkLimit;
 	
-    // From block 34559 reassess the difficulty every 40 blocks
+    // From block 35519 reassess the difficulty every 40 blocks
 	// Reduce Retarget factor to 2
-    if(pindexLast->nHeight >= 34559)
+    if(pindexLast->nHeight >= 35519)
     {
         nTargetTimespan = 60 * 60; // 1 hours
         nTargetSpacing = 1.5 * 60; // 1.5 minutes
