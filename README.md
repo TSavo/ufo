@@ -22,7 +22,7 @@ https://twitter.com/UFOCoins
 What is UFO Coin?
 -----------------
 
-- 4000 million total coins
+- 4 billion total coins
 - 5000 coins per block
 - 1 hour (40 blocks) to retarget difficulty at a factor of 2
 - Coins halves per 400000 block 
