@@ -1,3 +1,16 @@
+src/*.exe
+src/ufo
+src/ufod
+src/test_ufo
+.*.swp
+*.*~*
+*.bak
+*.rej
+*.orig
+*.o
+*.patch
+.ufo
+
 # Backups #
 ######################
 *.cpp~
@@ -20,3 +33,19 @@ build/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Compilation and Qt preprocessor part
+*.qm
+Makefile
+ufo-qt
+ufo-Qt.app
+
+# Unit-tests
+Makefile.test
+ufo-qt_test
+
+# Resources cpp
+qrc_*.cpp
+
+# Qt creator
+*.pro.user
